@@ -1,0 +1,28 @@
+AppBundle\DTO\Label:
+    properties:
+
+        name:
+            - NotBlank: ~
+
+        lat:
+            - Type:
+                  type: float
+                  message: The value {{ value }} is not a valid {{ type }}.
+            - NotBlank: ~
+
+        lng:
+            - Type:
+                  type: float
+                  message: The value {{ value }} is not a valid {{ type }}.
+            - NotBlank: ~
+
+        description:
+            - Type:
+                  type: string
+                  message: The value {{ value }} is not a valid {{ type }}.
+
+#        photos:
+#            - Valid: ~
+
+        created:
+            - Date: ~

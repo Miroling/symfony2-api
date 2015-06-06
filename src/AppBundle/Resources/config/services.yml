@@ -1,0 +1,5 @@
+services:
+  app.converter.query_param:
+    class: AppBundle\Converter\QueryParamConverter
+    tags:
+      - { name: request.param_converter, priority: -2, converter: query_param }

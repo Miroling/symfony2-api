@@ -1,0 +1,12 @@
+AppBundle\DTO\Filter\Paginator:
+    exclusion_policy: None
+    properties:
+        pageNumber:
+            access_type: property
+            type: integer
+            serialized_name: pageNumber
+
+        limit:
+            access_type: property
+            type: integer
+            serialized_name: limit

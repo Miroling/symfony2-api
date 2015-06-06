@@ -4,14 +4,14 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
+    validation:      { enabled: true, enable_annotations: true }
     templating:
         engines: ['twig']
         #assets_version: SomeVersionScheme
@@ -25,12 +25,14 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
 
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
-    use_controller: false
-    bundles:        [ ]
+    use_controller:
+        enabled: "%kernel.debug%"
+        profiler: false
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -71,25 +73,22 @@ swiftmailer:
 sensio_framework_extra:
     router:  { annotations: true }
     request: { converters: true }
-    view:    { annotations: true }
+    view:    { annotations: false }
     cache:   { annotations: true }
 
-fos_rest:
-    disable_csrf_role:    null
-    access_denied_listener:
+parameters:
+    jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
-        # Prototype
-        name:                 ~
-    unauthorized_challenge:  null
-    param_fetcher_listener:  false
+fos_rest:
+    param_fetcher_listener:  true
     cache_dir:            '%kernel.cache_dir%/fos_rest'
-    allowed_methods_listener:  false
+    allowed_methods_listener:  true
     routing_loader:
-        default_format:       null
+        default_format:       json
         include_format:       true
     body_converter:
-        enabled:              false
-        validate:             false
+        enabled:              true
+        validate:             true
         validation_errors_argument:  validationErrors
     service:
         router:               router
@@ -100,36 +99,33 @@ fos_rest:
         inflector:            fos_rest.inflector.doctrine
         validator:            validator
     serializer:
-        version:              null
+        version:              ~
         groups:               []
-        serialize_null:       false
+        serialize_null:       true
     view:
-        default_engine:       twig
-        force_redirects:
-
-            # Prototype
-            name:                 ~
-        mime_types:
-
-            # Prototype
-            name:                 ~
         formats:
-
-            # Prototype
-            name:                 ~
+            #rss: false
+            json: true
+            xml: true
+            html: true
         templating_formats:
-
-            # Prototype
-            name:                 ~
-        view_response_listener:  false
-        failed_validation:    400
+            html: true
+#        force_redirects:
+#            html: true
+        mime_types:
+            json: 'application/json'
+            jsonp: 'application/javascript+jsonp'
+            xml: 'application/xml'
+        mime_types:
+            json:   'application/json'
+            jsonp:  'application/javascript+jsonp'
+            xml: 'application/xml'
+        default_engine:       twig
+        view_response_listener:  force
+        failed_validation:    HTTP_BAD_REQUEST
         empty_content:        204
-        exception_wrapper_handler:  null
-        serialize_null:       false
-        jsonp_handler:
-            callback_param:       callback
-            callback_filter:      '/(^[a-z0-9_]+$)|(^YUI\.Env\.JSONP\._[0-9]+$)/i'
-            mime_type:            application/javascript+jsonp
+        exception_wrapper_handler:  FOS\RestBundle\View\ExceptionWrapperHandler
+        serialize_null:       true
 #    exception:
 #        enabled:              false
 #        exception_controller:  null
@@ -142,31 +138,19 @@ fos_rest:
 #            # Prototype
 #            name:                 ~
     body_listener:
-        default_format:       null
-        throw_exception_on_unsupported_content_type:  false
-        decoders:
+        default_format:       json
+        throw_exception_on_unsupported_content_type:  true
+        array_normalizer: fos_rest.normalizer.camel_keys
 
-            # Prototype
-            name:                 ~
-        array_normalizer:
-            service:              null
-            forms:                false
-#    format_listener:
-#        rules:
-#
-#            # URL path info
-#            path:                 null
-#
-#            # URL host name
-#            host:                 null
-#
-#            # Method for URL
-#            methods:              null
-#            stop:                 false
-#            prefer_extension:     true
-#            fallback_format:      html
-#            exception_fallback_format:  null
-#            priorities:           []
+#            # Prototype
+#            name:                 ~
+#        array_normalizer:
+#            service:              null
+#            forms:                false
+    format_listener:
+        rules:
+            - { path: ^/api, priorities: [ json, xml ], fallback_format: ~, prefer_extension: true }
+            - { path: '^/', priorities: [ 'text/javascript', 'text/css', 'text/html', '*/*'], fallback_format: html, prefer_extension: true }
 #        media_type:
 #            version_regex:        '/(v|version)=(?P<version>[0-9\.]+)/'
 
@@ -211,53 +195,17 @@ jms_serializer:
 #            doctype_whitelist:
 #                - '<!DOCTYPE authorized SYSTEM "http://some_url">' # an authorized document type for xml deserialization
 
+
 nelmio_api_doc:
     name:                 'API documentation'
-    exclude_sections:     []
-    default_sections_opened:  true
-    motd:
-        template:             'NelmioApiDocBundle::Components/motd.html.twig'
-    request_listener:
-        enabled:              true
-        parameter:            _doc
     sandbox:
-        enabled:              true
-        endpoint:             null
-        accept_type:          null
-        body_format:
-            formats:
-
-                # Defaults:
-#                - form
-                - json
-            default_format:      json # One of "form"; "json"
+        enabled:  true # default: true, you can set this parameter to `false` to disable the sandbox
+#          endpoint: /app_dev.php # default: /app_dev.php, use this parameter to define which URL to call through the sandbox
+        accept_type: application/json # default null, if set, the value is automatically populated as the Accept header
+        body_format: json # default form, determines whether to send x-www-form-urlencoded data or json-encoded data in sandbox requests
         request_format:
-            formats:
-
-                # Defaults:
-                json:                application/json
-#                xml:                 application/xml
-            method:               accept_header # One of "format_param"; "accept_header"
-            default_format:       json
+            method: format_param # default format_param, alternately accept_header, decides how to request the response format
+            default_format: json # default json, alternately xml, determines which content format to request back by default
         authentication:
             delivery:             header # Required
             name:                 App-Authorization # Required
-
-            # Required if http delivery is selected.
-            type:                 basic # One of "basic"; "bearer"
-            custom_endpoint:      false
-
-    swagger:
-        api_base_path:        /api
-        swagger_version:      '1.2'
-        api_version:          '0.1'
-        info:
-            title:                Symfony2
-            description:          'My awesome Symfony2 app!'
-            TermsOfServiceUrl:    null
-            contact:              null
-            license:              null
-            licenseUrl:           null
-    cache:
-        enabled:              false
-        file:                 '%kernel.cache_dir%/api-doc.cache'

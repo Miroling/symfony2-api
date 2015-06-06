@@ -1,0 +1,6 @@
+label:
+    type: rest
+    prefix: /labels
+    resource:  AppBundle\Controller\LabelController
+    name_prefix:  api_v1_label_
+    defaults:  { _version: 1, _format: ~ }

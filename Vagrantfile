@@ -14,14 +14,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |vconfig|
             # set memory to > 1GB
             v.customize [ "modifyvm", :id, "--memory", "1100" ]
             # maybe this will help Windows hosts with symlinks
-            v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
+            # v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
         end
         config.vm.host_name = "app.apibest.dev"
 
         # set lavish permission so that everything is executable
         #
 
-        config.vm.synced_folder "./", "/vagrant", :mount_options => ['dmode=777', 'fmode=666'] #, :nfs=>true
+        config.vm.synced_folder "./", "/vagrant", :nfs=>true #:mount_options => ['dmode=777', 'fmode=666'],
 
         config.vm.network :private_network, ip: "10.10.10.10"
 

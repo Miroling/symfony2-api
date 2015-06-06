@@ -24,10 +24,12 @@
         "jms/serializer-bundle": "0.13.*",
         "doctrine/migrations": "1.0.*@dev",
         "doctrine/doctrine-migrations-bundle": "2.1.*@dev",
-        "nelmio/api-doc-bundle": "~2.4"
+        "nelmio/api-doc-bundle": "~2.4",
+        "phpdocumentor/reflection-docblock": "dev-master"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "phpunit/phpunit": "4.3.*"
     },
     "scripts": {
         "post-install-cmd": [

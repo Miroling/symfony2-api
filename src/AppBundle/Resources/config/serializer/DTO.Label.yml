@@ -1,0 +1,67 @@
+AppBundle\DTO\Label:
+    exclusion_policy: ALL
+    xml_root_name: label
+    properties:
+        id:
+            access_type: property
+            type: integer
+            serialized_name: id
+            groups:
+                - api_v1_label_get
+                - api_v1_label_post_out
+                - api_v1_label_put
+
+        name:
+            access_type: property
+            type: string
+            serialized_name: name
+            groups:
+                - api_v1_label_get
+                - api_v1_label_post_out
+                - api_v1_label_post_in
+                - api_v1_label_put
+
+        lat:
+            access_type: property
+            type: float
+            serialized_name: lat
+            groups:
+                - api_v1_label_get
+                - api_v1_label_post_out
+                - api_v1_label_post_in
+                - api_v1_label_put
+
+        lng:
+            access_type: property
+            type: float
+            serialized_name: lng
+            groups:
+                - api_v1_label_get
+                - api_v1_label_post_out
+                - api_v1_label_post_in
+                - api_v1_label_put
+
+        description:
+            access_type: property
+            type: string
+            serialized_name: description
+            groups:
+                - api_v1_label_get
+                - api_v1_label_post_out
+                - api_v1_label_post_in
+                - api_v1_label_put
+
+#        photos:
+#            access_type: property
+#            type: array<string>
+#            serialized_name: photos
+
+        created:
+            access_type: property
+            type: DateTime<'m/d/Y'>
+            serialized_name: created
+            groups:
+                - api_v1_label_get
+                - api_v1_label_post_out
+                - api_v1_label_post_in
+                - api_v1_label_put
