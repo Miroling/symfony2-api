@@ -1,0 +1,10 @@
+class_name: ApiTester
+modules:
+  enabled: [PhpBrowser, REST, ApiHelper]
+  config:
+    PhpBrowser:
+      url: http://app.apibest.dev/
+      curl:
+        CURLOPT_RETURNTRANSFER: true
+    REST:
+        url: http://app.apibest.dev/api/v1/

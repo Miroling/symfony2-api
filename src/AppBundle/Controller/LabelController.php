@@ -174,16 +174,18 @@ class LabelController extends FOSRestController {
                 $label->created = $label->created->format("Y-m-d H:i:s");
             }
 
+            $label->id = $labelId;
+
             if ($conn->update("labels", (array)$label, array("id" => (int)$labelId))){
 
                 $qb =  $conn->createQueryBuilder();
-                $conn->select("*")->from("labels", "l")->where("id = :id");
-                $label =  $conn->executeQuery($qb->getSQL(), array("id" => $conn->lastInsertId()))->fetch();
+                $qb->select("*")->from("labels", "l")->where("id = :id");
+                $label =  $conn->executeQuery($qb->getSQL(), array("id" => $labelId))->fetch();
+
                 $label = ModelHelper::setProperties(new Label(), $label);
-
-                $view = $this->createView($label, array("api_v1_label_post_out"), Codes::HTTP_OK);
-
             }
+
+            $view = $this->createView($label, array("api_v1_label_post_out"), Codes::HTTP_OK);
 
         }
 

@@ -29,7 +29,7 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
-        "phpunit/phpunit": "4.3.*"
+        "codeception/codeception": "*"
     },
     "scripts": {
         "post-install-cmd": [

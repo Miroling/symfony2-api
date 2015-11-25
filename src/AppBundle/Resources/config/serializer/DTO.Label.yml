@@ -9,7 +9,6 @@ AppBundle\DTO\Label:
             groups:
                 - api_v1_label_get
                 - api_v1_label_post_out
-                - api_v1_label_put
 
         name:
             access_type: property

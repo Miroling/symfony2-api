@@ -49,12 +49,12 @@ class Label {
      */
     public $lng;
 
-    /**
-     * Place photos
-     *
-     * @var array
-     */
-    public $photos;
+//    /**
+//     * Place photos
+//     *
+//     * @var array
+//     */
+//    public $photos;
 
     /**
      * Label add date.
